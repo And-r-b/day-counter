@@ -1,10 +1,17 @@
 body {
-    background-size: cover;
+   background-size: cover;
     font-family: 'Open Sans', 'Helvetica Neue', sans-serif;
     text-align: center;
-    height: 100v;
-    background-color: lightseagreen;
-    height: 100vh;
+}
+
+.container{
+    background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url(linklookingout.jpg);
+    background-position: center;
+    width: auto;
+    height: 100%;
+    background-repeat: no-repeat;
+    align-content: center;
+    color: aqua;
 }
 
 h1 {
