@@ -7,10 +7,21 @@
         <div class="container">
             <h1>Day Counter</h1>
             <h2 id="count-el">0</h2>
-            <button id="increment-btn" onclick="increment()">ADD A DAY</button>
-            <button id="save-btn" onclick="save()">SAVE</button>
+            <button id="increment-btn" onclick="increment()">ADD DAY</button>
+            <button id="save-btn" onclick="save()">TRY AGAIN</button>
+            <button id="reset-btn" onclick="resetAll()">RESET</button>
             <p id="timer-display"></p>
             <p id="save-el">Previous entries: </p>
+            <p id="highscore-el">High Score: 0</p>
+            <p><b>ADD DAY</b> = Adds a day in the day counter.</p>
+            <p><b>TRY AGAIN</b> = Resets the Day counter after missed day
+            <br>
+                and also adds a entry in <b>Previous Entries.</b>
+            </p>
+            <p> <b>RESET</b> = Fully resets everything. 
+            <br>
+                <b>USE WITH CAUTION!</b>
+            </p>
         </div>
         <script src="index.js"></script>
     </body>

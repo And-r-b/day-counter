@@ -1,19 +1,24 @@
 body {
-   background-size: cover;
+    background-color: deepskyblue;
     font-family: 'Open Sans', 'Helvetica Neue', sans-serif;
     text-align: center;
-    background-color:deepskyblue;
+    margin: 0;
+    padding: 0;
 }
 
-.container{
-    /* display: block; */
-    background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url(linklookingout.jpg);
+.container {
+    background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('crater.png');
     background-position: center;
-    width: auto;
-    height: 100%;
+    background-size: cover; /* Ensures the image is responsive */
     background-repeat: no-repeat;
-    align-content: center;
+    width: 100%; /* Ensure it covers the full width */
+    height: 100vh; /* Fill the entire viewport height */
+    display: flex; /* Enable flexbox for centering content */
+    justify-content: center; /* Center content horizontally */
+    align-items: center; /* Center content vertically */
+    flex-direction: column; /* Stack items top to bottom */
     color: aqua;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
 h1 {
@@ -34,15 +39,18 @@ button {
     color: white;
     font-weight: bold;
     width: 200px;
-    margin-bottom: 5px;
+    margin-bottom: 10px; /* Adjust spacing between buttons */
     border-radius: 5px;
 }
 
 #increment-btn {
-    background: darkred;
+    background: rgba(0, 100, 0, 0.589);
 }
 
 #save-btn {
-    background: darkgreen;
+    background: rgba(255, 255, 0, 0.637);
 }
 
+#reset-btn {
+    background: rgba(128, 128, 128, 0.616);
+}
