@@ -4,7 +4,15 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.css">
         <link rel="stylesheet" href="index.css">
     </head>
-    <body>
+    <body class="loading">
+        <!-- Preloader -->
+        <div id="preloader">
+            <div class="spinner"></div>
+            <span class="loading-text">Loading...</span>
+        </div>
+        
+        
+    
         <div class="container">
             <h1>Day Counter</h1>
             <h2 id="count-el">0</h2>
@@ -15,12 +23,12 @@
             <p id="save-el">Previous entries: </p>
             <p id="highscore-el">High Score: 0</p>
             <p><b>ADD DAY</b> = Adds a day in the day counter.</p>
-            <p><b>TRY AGAIN</b> = Resets the Day counter after missed day
-            <br>
-                and also adds a entry in <b>Previous Entries.</b>
+            <p><b>TRY AGAIN</b> = Resets the Day counter after a missed day
+                <br>
+                and also adds an entry in <b>Previous Entries.</b>
             </p>
-            <p> <b>RESET</b> = Fully resets everything. 
-            <br>
+            <p><b>RESET</b> = Fully resets everything. 
+                <br>
                 <b>USE WITH CAUTION!</b>
             </p>
         </div>

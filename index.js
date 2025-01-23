@@ -1,3 +1,16 @@
+// Hide the preloader after the page loads
+window.addEventListener("load", function () {
+    const preloader = document.getElementById("preloader");
+
+    // Add a slight delay and then fade out
+    setTimeout(() => {
+        preloader.classList.add("hidden"); // Add 'hidden' class for fade-out
+        document.body.classList.remove("loading"); // Allow scrolling
+    }, 1000); // Keep the preloader visible for 1 second after the page loads
+});
+
+
+// let variables for getting ids and others
 let saveEl = document.getElementById("save-el");
 let countEl = document.getElementById("count-el");
 let incrementBtn = document.getElementById("increment-btn");
