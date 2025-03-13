@@ -174,7 +174,7 @@ function startCooldown(duration = 86400000) {
                 .padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
 
             timerDisplay.textContent = `Cooldown: ${formattedTime}`;
-            timerDisplay.style.fontSize = "32px";
+            timerDisplay.style.fontSize = "26px";
         }
     }, interval);
 }
