@@ -57,7 +57,7 @@ function loadSavedData() {
         const timeSinceLastAction = now - parseInt(lastActionTime, 10);
 
         // If more than 24 hours have passed, show the missed day message
-        if (timeSinceLastAction >= 86400000) { // 86400000 ms = 1 day
+        if (timeSinceLastAction >= 90000000) { // 90000000 ms = 24hrs + 1 hr for grace period
             showMissedDayMessage();
         }
     }
