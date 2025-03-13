@@ -9,6 +9,20 @@ window.addEventListener("load", function () {
     }, 1000); // Keep the preloader visible for 1 second after the page loads
 });
 
+// Sidebar toggle function
+function toggleSidebar() {
+    const sidebar = document.getElementById("sidebar");
+    sidebar.classList.toggle("open");
+}
+
+// Toggle submenu visibility when clicking "Settings"
+document.querySelectorAll('.submenu-parent > a').forEach(function(menuItem) {
+    menuItem.addEventListener('click', function(e) {
+        e.preventDefault();
+        const parent = this.parentElement;
+        parent.classList.toggle('active');  // Toggling the 'active' class to show submenu
+    });
+});
 
 // let variables for getting ids and others
 let saveEl = document.getElementById("save-el");

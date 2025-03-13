@@ -16,6 +16,28 @@
             <div class="spinner"></div>
             <span class="loading-text">Loading...</span>
         </div>
+
+         <!-- Sidebar -->
+    <div id="sidebar" class="sidebar">
+        <button class="close-btn" onclick="toggleSidebar()">&#10006;</button>
+        <h2>Menu</h2>
+        <ul>
+            <li><a href="/index.html">Home</a></li> <br>
+            <li class="submenu-parent">
+                <a href="#">Settings</a>
+                <ul class="submenu">
+                    <li><a href="#">Profile</a></li>
+                    <li><a href="#"">Reminder</a></li>
+                    <li><a href="#">Change Theme</a></li>
+                    <li><a href="#">Change Time Format</a></li>
+                </ul>
+            </li> <br>
+            <li><a href="#">Previous Entries</a></li>
+        </ul>
+    </div>
+    
+    <!-- Sidebar Toggle Button -->
+    <button id="sidebar-toggle" onclick="toggleSidebar()">&#9776;</button>
         
         <div class="container">
             <h1>Day Counter</h1>
