@@ -1,6 +1,6 @@
 body {
     background-color: deepskyblue;
-    font-family: 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-family: "Quicksand", sans-serif;
     text-align: center;
     margin: 0;
     padding: 0;
@@ -77,7 +77,6 @@ body.loading {
     align-items: center; /* Center content vertically */
     flex-direction: column; /* Stack items top to bottom */
     color: aqua;
-    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
 h1 {
@@ -89,6 +88,11 @@ h2 {
     font-size: 50px;
     margin-top: 0;
     margin-bottom: 20px;
+}
+
+p {
+    line-height: 1.5;
+    font-weight: 700;
 }
 
 button {
