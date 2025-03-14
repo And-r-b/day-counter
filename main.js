@@ -235,3 +235,14 @@ resetBtn.addEventListener("click", resetAll);
 
 // Load data when the page is loaded
 loadSavedData();
+
+// Close sidebar when clicking outside of it
+document.addEventListener("click", function (event) {
+    const sidebar = document.getElementById("sidebar");
+    const toggleButton = document.getElementById("sidebar-toggle");
+
+    // Check if the sidebar is open and the click is outside the sidebar and toggle button
+    if (sidebar.classList.contains("open") && !sidebar.contains(event.target) && !toggleButton.contains(event.target)) {
+        toggleSidebar(); // Close the sidebar
+    }
+});
