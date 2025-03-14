@@ -144,6 +144,7 @@ ul li a {
 }
 
 .container {
+    background-image: url('crater.png'); /* Set the default image */
     background-position: center;
     background-size: cover; /* Ensures the image is responsive */
     background-repeat: no-repeat;
@@ -195,4 +196,3 @@ button {
 #reset-btn {
     background: rgba(128, 128, 128, 0.616);
 }
-
