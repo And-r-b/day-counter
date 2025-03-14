@@ -129,19 +129,24 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 
-// Change time format
 document.getElementById("change-time-format").addEventListener("click", function() {
-    // Toggle between HH:MM:SS and MM:SS
+    // Retrieve and convert the stored format preference (default to HH:MM:SS)
     let isHHMMSS = localStorage.getItem("isHHMMSS");
 
-    if (isHHMMSS === "true") {
-        localStorage.setItem("isHHMMSS", "false"); // Set to MM:SS
+    if (isHHMMSS === null) {
+        isHHMMSS = true; // Default to HH:MM:SS if nothing is stored
     } else {
-        localStorage.setItem("isHHMMSS", "true"); // Set to HH:MM:SS
+        isHHMMSS = isHHMMSS === "true"; // Convert from string to boolean
     }
 
-    // Reload or refresh the cooldown timer with the new format
-    loadSavedData();
+    // Toggle the format
+    isHHMMSS = !isHHMMSS;
+
+    // Save the new format setting
+    localStorage.setItem("isHHMMSS", isHHMMSS.toString());
+
+    // Update the displayed timer with the new format
+    updateTimerDisplay();
 });
 
 
@@ -171,7 +176,11 @@ function loadSavedData() {
     const savedHighScore = localStorage.getItem("highScore");
     const cooldownEndTime = localStorage.getItem("cooldownEndTime");
     const lastActionTime = localStorage.getItem("lastActionTime");
-    const isHHMMSS = localStorage.getItem("isHHMMSS") === "true"; // Get time format preference
+
+    // 🔹 Ensure a default time format is set (HH:MM:SS as default)
+    if (localStorage.getItem("isHHMMSS") === null) {
+        localStorage.setItem("isHHMMSS", "true");  // Default to HH:MM:SS
+    }
 
     if (savedCount !== null) {
         count = parseInt(savedCount, 10);
@@ -180,26 +189,19 @@ function loadSavedData() {
     if (savedEntries !== null) {
         saveEl.textContent = `Previous entries: ${savedEntries}`;
     }
-
     if (savedHighScore !== null) {
         document.getElementById("highscore-el").textContent = `High Score: ${savedHighScore}`;
     }
-
+    
     if (cooldownEndTime !== null) {
         const now = new Date().getTime();
         const remainingTime = parseInt(cooldownEndTime, 10) - now;
         if (remainingTime > 0) {
-            startCooldown(remainingTime, isHHMMSS);
+            startCooldown(remainingTime);
         }
     }
 
-    if (lastActionTime !== null) {
-        const now = new Date().getTime();
-        const timeSinceLastAction = now - parseInt(lastActionTime, 10);
-        if (timeSinceLastAction >= 90000000) {
-            showMissedDayMessage();
-        }
-    }
+    updateTimerDisplay();  // 🔹 Update the timer with the correct format
 }
 
 // Show message if a day is missed
@@ -228,16 +230,28 @@ function showMissedDayMessage() {
 function updateTimerDisplay() {
     const lastActionTime = parseInt(localStorage.getItem("lastActionTime"), 10);
     const timeSinceLastAction = new Date().getTime() - lastActionTime;
-
     const timeToMiss = 90000000 - timeSinceLastAction;
 
     if (timeToMiss <= 0) {
         showMissedDayMessage();
     } else {
-        const hours = Math.floor(timeToMiss / (1000 * 60 * 60));
-        const minutes = Math.floor((timeToMiss % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((timeToMiss % (1000 * 60)) / 1000);
-        timerDisplay.textContent = `Time Left: ${hours}:${minutes}:${seconds}`;
+        const isHHMMSS = localStorage.getItem("isHHMMSS") === "true";  // Read stored format
+
+        let formattedTime;
+        if (isHHMMSS) {
+            // 🔹 Display "Cooldown" when in HH:MM:SS format
+            const hours = Math.floor(timeToMiss / (1000 * 60 * 60));
+            const minutes = Math.floor((timeToMiss % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeToMiss % (1000 * 60)) / 1000);
+            formattedTime = `Cooldown: ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        } else {
+            // 🔹 Display "Time Left" when in MM:SS format
+            const minutes = Math.floor(timeToMiss / (1000 * 60));
+            const seconds = Math.floor((timeToMiss % (1000 * 60)) / 1000);
+            formattedTime = `Time Left: ${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        timerDisplay.textContent = formattedTime;
     }
 }
 
@@ -309,7 +323,7 @@ function save() {
 
 
 // Cooldown function
-function startCooldown(duration = 86400000, isHHMMSS = true) {
+function startCooldown(duration = 86400000) {
     const interval = 1000;
     incrementBtn.disabled = true;
     const cooldownEndTime = new Date().getTime() + duration;
@@ -326,27 +340,7 @@ function startCooldown(duration = 86400000, isHHMMSS = true) {
             incrementBtn.textContent = "ADD DAY";
             localStorage.removeItem("cooldownEndTime");
         } else {
-            let formattedTime;
-
-            if (isHHMMSS) {
-                const hours = Math.floor(remainingTime / (1000 * 60 * 60));
-                const minutes = Math.floor((remainingTime % (1000 * 60 * 60)) / (1000 * 60));
-                const seconds = Math.floor((remainingTime % (1000 * 60)) / 1000);
-
-                formattedTime = `${hours.toString().padStart(2, '0')}:${minutes
-                    .toString()
-                    .padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-            } else {
-                const minutes = Math.floor(remainingTime / (1000 * 60));
-                const seconds = Math.floor((remainingTime % (1000 * 60)) / 1000);
-
-                formattedTime = `${minutes.toString().padStart(2, '0')}:${seconds
-                    .toString()
-                    .padStart(2, '0')}`;
-            }
-
-            timerDisplay.textContent = `Cooldown: ${formattedTime}`;
-            timerDisplay.style.fontSize = "26px";
+            updateTimerDisplay();  // 🔹 Ensure the correct format is displayed
         }
     }, interval);
 }
