@@ -79,6 +79,8 @@ body.loading {
     transform: translate(-100%);
     border-right: 1px solid lightgray;
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    text-align: left;
+    padding-top: 70px;
 }
 
 .sidebar.open {
@@ -97,13 +99,15 @@ body.loading {
 #sidebar-toggle {
     position: fixed;
     top: 20px;
-    left: 0px;
+    left: 0;
+    margin-left: 0;
     background: none;
     color: white;
     border: none;
-    font-size: 20px;
+    font-size: 24px;
     cursor: pointer;
     padding: 10px;
+    font-weight: bold;
 }
 
 ul {

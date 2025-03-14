@@ -12,8 +12,18 @@ window.addEventListener("load", function () {
 // Sidebar toggle function
 function toggleSidebar() {
     const sidebar = document.getElementById("sidebar");
+    const toggleButton = document.getElementById("sidebar-toggle");
+
     sidebar.classList.toggle("open");
+
+    // Change button icon based on sidebar state
+    if (sidebar.classList.contains("open")) {
+        toggleButton.innerHTML = "&#10006;"; // 'X' icon
+    } else {
+        toggleButton.innerHTML = "&#9776;"; // '☰' (hamburger) icon
+    }
 }
+
 
 // Toggle submenu visibility when clicking "Settings"
 document.querySelectorAll('.submenu-parent > a').forEach(function(menuItem) {
