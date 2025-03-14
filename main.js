@@ -340,7 +340,7 @@ function startCooldown(duration = 86400000) {
             incrementBtn.textContent = "ADD DAY";
             localStorage.removeItem("cooldownEndTime");
         } else {
-            updateTimerDisplay();  // 🔹 Ensure the correct format is displayed
+            updateTimerDisplay();  //  Ensuring the correct format is displayed
         }
     }, interval);
 }
