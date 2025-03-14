@@ -134,13 +134,16 @@ ul li a {
     display: block;
 }
 
+#remove-nickname-btn {
+    color: black;
+}
+
 .dark-mode {
     background-color: #333;
     color: white;
 }
 
 .container {
-    background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('crater.png');
     background-position: center;
     background-size: cover; /* Ensures the image is responsive */
     background-repeat: no-repeat;

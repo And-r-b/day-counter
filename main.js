@@ -24,6 +24,126 @@ function toggleSidebar() {
     }
 }
 
+// Ask for permission to show notifications
+function requestNotificationPermission() {
+    if (Notification.permission !== "granted") {
+        Notification.requestPermission().then(permission => {
+            if (permission === "granted") {
+                console.log("Notification permission granted.");
+            }
+        });
+    }
+}
+
+requestNotificationPermission();
+
+// Close sidebar when clicking outside of it
+document.addEventListener("click", function (event) {
+    const sidebar = document.getElementById("sidebar");
+    const toggleButton = document.getElementById("sidebar-toggle");
+
+    if (sidebar.classList.contains("open") && !sidebar.contains(event.target) && !toggleButton.contains(event.target)) {
+        toggleSidebar();
+    }
+});
+
+// Nickname saving and displaying logic
+document.addEventListener("DOMContentLoaded", function () {
+    const nicknameInput = document.getElementById("nickname-input");
+    const saveNicknameBtn = document.getElementById("save-nickname-btn");
+    const nicknameContainer = document.getElementById("nickname-container");
+    const removeNicknameBtn = document.getElementById("remove-nickname-btn");
+
+    // Load the saved nickname from localStorage
+    const savedNickname = localStorage.getItem("nickname");
+    if (savedNickname) {
+        nicknameContainer.innerHTML = `<p><b>Welcome, ${savedNickname}!</b></p>`;
+        nicknameInput.style.display = "none"; // Hide input after saving
+        saveNicknameBtn.style.display = "none"; // Hide save button
+        removeNicknameBtn.style.display = "block"; // Show the remove button
+    }
+
+    // Save nickname when the button is clicked
+    saveNicknameBtn.addEventListener("click", function () {
+        const nickname = nicknameInput.value.trim();
+        if (nickname !== "") {
+            localStorage.setItem("nickname", nickname); // Save nickname in localStorage
+            nicknameContainer.innerHTML = `<p><b>Welcome, ${nickname}!</b></p>`; // Show welcome message
+            nicknameInput.style.display = "none"; // Hide input field
+            saveNicknameBtn.style.display = "none"; // Hide save button
+            removeNicknameBtn.style.display = "block"; // Show the remove button
+        }
+    });
+
+    //remove nickname when the remove button is clicked
+    removeNicknameBtn.addEventListener("click", function() {
+        // Remove nickname from localStorage
+        localStorage.removeItem("nickname");
+
+        // Clear nickname in the UI
+        nicknameContainer.innerHTML = "";
+        nicknameInput.style.display = "block";
+        saveNicknameBtn.style.display = "block";
+        removeNicknameBtn.style.display = "none";
+    })
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+    const changeThemeBtn = document.getElementById("change-theme-btn");
+
+    // Array of background images
+    const backgroundImages = [
+        "url('crater.png')", // background 1
+        "url('view.jpg')", // background 2
+        "url('sunsettingview.jpg')" , // background 3
+        "url('nightview.jpg')", // background 4
+        "url('castleview.jpg')", // background 5
+        "url('landscapeview.jpg')", // background 6
+        "url('castleriverview.jpg')", // background 7
+    ];
+
+    let currentThemeIndex = 0; // Start with the first background image
+
+    // Function to change background theme
+    function changeBackgroundTheme() {
+        // Cycle through the images
+        currentThemeIndex = (currentThemeIndex + 1) % backgroundImages.length;
+
+        // Apply the new background image to the .container element
+        const container = document.querySelector('.container');
+        container.style.backgroundImage = `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), ${backgroundImages[currentThemeIndex]}`;
+
+        // Optionally, store the theme in localStorage
+        localStorage.setItem("selectedTheme", currentThemeIndex);
+    }
+
+    // Event listener for the "Change Theme" button
+    changeThemeBtn.addEventListener("click", changeBackgroundTheme);
+
+    // Load the previously selected theme from localStorage (if any)
+    const savedTheme = localStorage.getItem("selectedTheme");
+    if (savedTheme !== null) {
+        currentThemeIndex = parseInt(savedTheme, 10);
+        const container = document.querySelector('.container');
+        container.style.backgroundImage = `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), ${backgroundImages[currentThemeIndex]}`;
+    }
+});
+
+// Change time format
+document.getElementById("change-time-format").addEventListener("click", function() {
+    // Toggle between HH:MM:SS and MM:SS
+    let isHHMMSS = localStorage.getItem("isHHMMSS");
+
+    if (isHHMMSS === "true") {
+        localStorage.setItem("isHHMMSS", "false"); // Set to MM:SS
+    } else {
+        localStorage.setItem("isHHMMSS", "true"); // Set to HH:MM:SS
+    }
+
+    // Reload or refresh the cooldown timer with the new format
+    loadSavedData();
+});
+
 
 // Toggle submenu visibility when clicking "Settings"
 document.querySelectorAll('.submenu-parent > a').forEach(function(menuItem) {
@@ -51,8 +171,8 @@ function loadSavedData() {
     const savedHighScore = localStorage.getItem("highScore");
     const cooldownEndTime = localStorage.getItem("cooldownEndTime");
     const lastActionTime = localStorage.getItem("lastActionTime");
+    const isHHMMSS = localStorage.getItem("isHHMMSS") === "true"; // Get time format preference
 
-    // Initialize saved count and entries
     if (savedCount !== null) {
         count = parseInt(savedCount, 10);
         countEl.textContent = count;
@@ -61,27 +181,22 @@ function loadSavedData() {
         saveEl.textContent = `Previous entries: ${savedEntries}`;
     }
 
-    // Show high score
     if (savedHighScore !== null) {
         document.getElementById("highscore-el").textContent = `High Score: ${savedHighScore}`;
     }
 
-    // Check if the cooldown is still active
     if (cooldownEndTime !== null) {
         const now = new Date().getTime();
         const remainingTime = parseInt(cooldownEndTime, 10) - now;
         if (remainingTime > 0) {
-            startCooldown(remainingTime);
+            startCooldown(remainingTime, isHHMMSS);
         }
     }
 
-    // Check if a day has been missed (more than 24 hours since the last action)
     if (lastActionTime !== null) {
         const now = new Date().getTime();
         const timeSinceLastAction = now - parseInt(lastActionTime, 10);
-
-        // If more than 24 hours have passed, show the missed day message
-        if (timeSinceLastAction >= 90000000) { // 90000000 ms = 24hrs + 1 hr for grace period
+        if (timeSinceLastAction >= 90000000) {
             showMissedDayMessage();
         }
     }
@@ -97,8 +212,33 @@ function showMissedDayMessage() {
     // Disable the "Try Again" button and change it to "Start Over"
     document.getElementById("save-btn").textContent = "TRY AGAIN";
     
+    // Send a reminder notification before they miss the day
+    const timeToMiss = 90000000 - (new Date().getTime() - parseInt(localStorage.getItem("lastActionTime"), 10));
+
+    if (timeToMiss <= 3600000 && timeToMiss > 0) {
+        new Notification("Reminder", {
+            body: "You have 1 hour left to press ADD DAY before you miss a day"
+        });
+    }
+
     // Set the flag to indicate the user missed a day
     isMissedDay = true;
+}
+
+function updateTimerDisplay() {
+    const lastActionTime = parseInt(localStorage.getItem("lastActionTime"), 10);
+    const timeSinceLastAction = new Date().getTime() - lastActionTime;
+
+    const timeToMiss = 90000000 - timeSinceLastAction;
+
+    if (timeToMiss <= 0) {
+        showMissedDayMessage();
+    } else {
+        const hours = Math.floor(timeToMiss / (1000 * 60 * 60));
+        const minutes = Math.floor((timeToMiss % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((timeToMiss % (1000 * 60)) / 1000);
+        timerDisplay.textContent = `Time Left: ${hours}:${minutes}:${seconds}`;
+    }
 }
 
 // Increment function
@@ -169,33 +309,41 @@ function save() {
 
 
 // Cooldown function
-function startCooldown(duration = 86400000) {
-    const interval = 1000; // Update interval (1 second)
+function startCooldown(duration = 86400000, isHHMMSS = true) {
+    const interval = 1000;
     incrementBtn.disabled = true;
     const cooldownEndTime = new Date().getTime() + duration;
-    localStorage.setItem("cooldownEndTime", cooldownEndTime); // Save the cooldown end time
+    localStorage.setItem("cooldownEndTime", cooldownEndTime);
 
-    // Update the cooldown timer every second
     timerInterval = setInterval(() => {
         const now = new Date().getTime();
         const remainingTime = cooldownEndTime - now;
 
         if (remainingTime <= 0) {
             clearInterval(timerInterval);
-            timerDisplay.textContent = ""; // Clear the timer display
+            timerDisplay.textContent = "";
             incrementBtn.disabled = false;
             incrementBtn.textContent = "ADD DAY";
-            localStorage.removeItem("cooldownEndTime"); // Remove the cooldown state
+            localStorage.removeItem("cooldownEndTime");
         } else {
-            // Convert remaining time to hours, minutes, and seconds
-            const hours = Math.floor(remainingTime / (1000 * 60 * 60));
-            const minutes = Math.floor((remainingTime % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((remainingTime % (1000 * 60)) / 1000);
+            let formattedTime;
 
-            // Format the time as HH:MM:SS
-            const formattedTime = `${hours.toString().padStart(2, '0')}:${minutes
-                .toString()
-                .padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            if (isHHMMSS) {
+                const hours = Math.floor(remainingTime / (1000 * 60 * 60));
+                const minutes = Math.floor((remainingTime % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((remainingTime % (1000 * 60)) / 1000);
+
+                formattedTime = `${hours.toString().padStart(2, '0')}:${minutes
+                    .toString()
+                    .padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            } else {
+                const minutes = Math.floor(remainingTime / (1000 * 60));
+                const seconds = Math.floor((remainingTime % (1000 * 60)) / 1000);
+
+                formattedTime = `${minutes.toString().padStart(2, '0')}:${seconds
+                    .toString()
+                    .padStart(2, '0')}`;
+            }
 
             timerDisplay.textContent = `Cooldown: ${formattedTime}`;
             timerDisplay.style.fontSize = "26px";

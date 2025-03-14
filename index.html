@@ -21,6 +21,8 @@
     <div id="sidebar" class="sidebar">
         <h2>Menu</h2>
         <ul>
+             <!-- Where the nickname will appear -->
+             <div id="nickname-container"></div>
             <li><a href="/index.html">Home</a></li> <br>
             <li class="submenu-parent">
                 <a href="#">Settings</a><br>
@@ -29,13 +31,13 @@
                         <ul>
                             <li>
                                 <label for="">Nickname</label> <br>
-                                <input type="text" name="" id="" placeholder="Write your nickname"><br>
-                                <input type="button" value="Save">
+                                <input type="text" id="nickname-input" placeholder="Write your nickname"><br>
+                                <input type="button" id="save-nickname-btn" value="Save">
+                                <button id="remove-nickname-btn" style="display:none;">Remove Nickname</button>
                             </li>
                         </ul>
-                    <li><a href="#"">Reminder</a></li>
-                    <li><a href="#">Change Theme</a></li>
-                    <li><a href="#">Change Time Format</a></li>
+                    <li><a href="#" id="change-theme-btn">Change Theme</a></li>
+                    <li><a href="#" id="change-time-format">Change Time Format</a></li>
                 </ul>
             </li> <br>
             <li><a href="#" id="save-el">Previous Entries </a></li>
