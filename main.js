@@ -177,7 +177,7 @@ function loadSavedData() {
     const cooldownEndTime = localStorage.getItem("cooldownEndTime");
     const lastActionTime = localStorage.getItem("lastActionTime");
 
-    // 🔹 Ensure a default time format is set (HH:MM:SS as default)
+    //  Ensure a default time format is set (HH:MM:SS as default)
     if (localStorage.getItem("isHHMMSS") === null) {
         localStorage.setItem("isHHMMSS", "true");  // Default to HH:MM:SS
     }
@@ -201,7 +201,7 @@ function loadSavedData() {
         }
     }
 
-    updateTimerDisplay();  // 🔹 Update the timer with the correct format
+    updateTimerDisplay();  //  Update the timer with the correct format
 }
 
 // Show message if a day is missed
@@ -239,13 +239,13 @@ function updateTimerDisplay() {
 
         let formattedTime;
         if (isHHMMSS) {
-            // 🔹 Display "Cooldown" when in HH:MM:SS format
+            // Display "Cooldown" when in HH:MM:SS format
             const hours = Math.floor(timeToMiss / (1000 * 60 * 60));
             const minutes = Math.floor((timeToMiss % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((timeToMiss % (1000 * 60)) / 1000);
             formattedTime = `Cooldown: ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
         } else {
-            // 🔹 Display "Time Left" when in MM:SS format
+            // Display "Time Left" when in MM:SS format
             const minutes = Math.floor(timeToMiss / (1000 * 60));
             const seconds = Math.floor((timeToMiss % (1000 * 60)) / 1000);
             formattedTime = `Time Left: ${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
