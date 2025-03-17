@@ -215,7 +215,7 @@ function showMissedDayMessage() {
     document.getElementById("save-btn").textContent = "TRY AGAIN";
     
     // Send a reminder notification before they miss the day
-    const timeToMiss = 90000000 - (new Date().getTime() - parseInt(localStorage.getItem("lastActionTime"), 10));
+    const timeToMiss = 86400000 - (new Date().getTime() - parseInt(localStorage.getItem("lastActionTime"), 10));
 
     if (timeToMiss <= 3600000 && timeToMiss > 0) {
         new Notification("Reminder", {
@@ -230,7 +230,7 @@ function showMissedDayMessage() {
 function updateTimerDisplay() {
     const lastActionTime = parseInt(localStorage.getItem("lastActionTime"), 10);
     const timeSinceLastAction = new Date().getTime() - lastActionTime;
-    const timeToMiss = 90000000 - timeSinceLastAction;
+    const timeToMiss = 86400000 - timeSinceLastAction;
 
     if (timeToMiss <= 0) {
         showMissedDayMessage();
