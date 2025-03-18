@@ -187,7 +187,7 @@ function loadSavedData() {
         countEl.textContent = count;
     }
     if (savedEntries !== null) {
-        saveEl.textContent = `Previous entries: ${savedEntries}`;
+        saveEl.textContent = ` ${savedEntries}`;
     }
     if (savedHighScore !== null) {
         document.getElementById("highscore-el").textContent = `High Score: ${savedHighScore}`;
@@ -230,7 +230,7 @@ function showMissedDayMessage() {
 function updateTimerDisplay() {
     const lastActionTime = parseInt(localStorage.getItem("lastActionTime"), 10);
     const timeSinceLastAction = new Date().getTime() - lastActionTime;
-    const timeToMiss = 86400000 - timeSinceLastAction;
+    const timeToMiss = 86400000   - timeSinceLastAction;
 
     if (timeToMiss <= 0) {
         showMissedDayMessage();
@@ -323,7 +323,7 @@ function save() {
 
 
 // Cooldown function
-function startCooldown(duration = 86400000) {
+function startCooldown(duration = 86400000  ) { // 86400000 24hrs
     const interval = 1000;
     incrementBtn.disabled = true;
     const cooldownEndTime = new Date().getTime() + duration;
