@@ -138,6 +138,12 @@ ul li a {
     color: black;
 }
 
+#creds {
+    display: flex;
+    justify-content: flex-start;
+    padding-top: 340px;
+}
+
 .dark-mode {
     background-color: #333;
     color: white;
